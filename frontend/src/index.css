@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+/* ───────────── OnboardIQ design tokens ───────────── */
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, "Segoe UI", -apple-system, sans-serif;
+
+  /* Brand */
+  --color-primary-50: #eff5ff;
+  --color-primary-100: #dbe8fe;
+  --color-primary-200: #bfd5fe;
+  --color-primary-300: #93b8fd;
+  --color-primary-400: #6094fa;
+  --color-primary-500: #2f6fed;
+  --color-primary-600: #1f5ad6;
+  --color-primary-700: #1a49ad;
+  --color-primary-800: #1b3f8c;
+  --color-primary-900: #1c366f;
+
+  --color-navy-950: #0d1f38;
+  --color-navy-900: #142b4a;
+  --color-navy-800: #1c3a61;
+  --color-navy-700: #2a4a73;
+
+  /* Surfaces & lines */
+  --color-surface: #f2f6fe;
+  --color-line: #dde7f6;
+  --color-line-strong: #c9d7ee;
+
+  /* Shape */
+  --radius-panel: 14px;
+
+  /* Elevation */
+  --shadow-card: 0 1px 2px rgb(27 63 140 / 0.05), 0 6px 18px -10px rgb(31 90 214 / 0.16);
+  --shadow-raised: 0 1px 2px rgb(27 63 140 / 0.05), 0 16px 36px -14px rgb(31 90 214 / 0.28);
+  --shadow-glow: 0 10px 30px -10px rgb(47 111 237 / 0.55);
+  --shadow-pop: 0 16px 40px -12px rgb(20 43 74 / 0.25), 0 2px 6px rgb(20 43 74 / 0.06);
+
+  /* Motion */
+  --animate-fade-up: fade-up 360ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-fade-in: fade-in 200ms ease-out both;
+  --animate-scale-in: scale-in 160ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-grow-x: grow-x 900ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  --animate-halo: halo 2.4s ease-out infinite;
+  --animate-shimmer: shimmer 1.4s linear infinite;
+  --animate-confetti: confetti 1.6s cubic-bezier(0.2, 0.6, 0.4, 1) forwards;
+
+  @keyframes fade-up {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.97) translateY(-2px); }
+    to { opacity: 1; transform: scale(1) translateY(0); }
+  }
+  @keyframes grow-x {
+    from { transform: scaleX(0); }
+    to { transform: scaleX(1); }
+  }
+  @keyframes halo {
+    0% { box-shadow: 0 0 0 0 rgb(52 111 231 / 0.28); }
+    70%, 100% { box-shadow: 0 0 0 10px rgb(52 111 231 / 0); }
+  }
+  @keyframes shimmer {
+    from { background-position: -200% 0; }
+    to { background-position: 200% 0; }
+  }
+  @keyframes confetti {
+    0% { opacity: 0; transform: translate(0, 0) rotate(0deg); }
+    10% { opacity: 1; }
+    100% { opacity: 0; transform: translate(var(--confetti-x), var(--confetti-y)) rotate(var(--confetti-r)); }
+  }
+}
+
+/* Shared keyboard focus style */
+@utility focus-ring {
+  &:focus-visible {
+    outline: 2px solid var(--color-primary-500);
+    outline-offset: 2px;
+  }
+}
+
+/* Small uppercase label used above headings and in table headers */
+@utility eyebrow {
+  font-size: 11px;
+  line-height: 16px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* A card that lifts slightly on hover (clickable rows and tiles). */
+@utility card-hover {
+  transition: box-shadow 200ms ease, transform 200ms ease, border-color 200ms ease;
+  &:hover {
+    box-shadow: var(--shadow-raised);
+    border-color: var(--color-primary-200);
+  }
+}
+
+/* Light-blue tinted section background used to break up white space. */
+@utility tint-blue {
+  background-image: linear-gradient(135deg, var(--color-primary-50) 0%, #ffffff 70%);
+}
+
+/* Slim, low-contrast scrollbars for inner scroll areas */
+@utility scrollbar-thin {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-line-strong) transparent;
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/*
+ * Grid items default to min-width: auto, so wide content (tables, horizontally
+ * scrolling chip rows) would stretch the whole page on small screens. Letting
+ * items shrink keeps overflow inside their own scroll containers.
+ */
+@layer base {
+  .grid > * {
+    min-width: 0;
+  }
+}
+
+body {
+  @apply bg-white text-slate-700 antialiased;
+  font-feature-settings: "cv11", "ss01", "ss03";
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}

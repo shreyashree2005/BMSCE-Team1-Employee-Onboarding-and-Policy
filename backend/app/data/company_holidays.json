@@ -1,0 +1,14 @@
+{
+  "_comment": "Company holiday calendar used for onboarding due dates and the calendar view. Edit this list (or point COMPANY_HOLIDAYS_FILE at your own file) to match your HR holiday list. type: 'company' (national/company holiday) or 'festival'.",
+  "holidays": [
+    { "date": "2026-01-01", "name": "New Year's Day", "type": "company" },
+    { "date": "2026-01-26", "name": "Republic Day", "type": "company" },
+    { "date": "2026-05-01", "name": "May Day", "type": "company" },
+    { "date": "2026-08-15", "name": "Independence Day", "type": "company" },
+    { "date": "2026-10-02", "name": "Gandhi Jayanti", "type": "company" },
+    { "date": "2026-11-01", "name": "Kannada Rajyotsava", "type": "company" },
+    { "date": "2026-11-10", "name": "Diwali (Balipadyami)", "type": "festival" },
+    { "date": "2026-11-24", "name": "Guru Nanak Jayanti", "type": "festival" },
+    { "date": "2026-12-25", "name": "Christmas Day", "type": "festival" }
+  ]
+}

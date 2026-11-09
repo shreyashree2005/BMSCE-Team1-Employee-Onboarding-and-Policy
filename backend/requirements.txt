@@ -1,0 +1,32 @@
+# Runtime
+fastapi==0.162.0
+uvicorn[standard]==0.54.0
+pydantic==2.14.3
+pydantic-settings==2.16.2
+
+# Database
+SQLAlchemy==2.1.8
+psycopg[binary]==3.3.8
+alembic==1.20.1
+
+# Authentication: signed session tokens (passwords use the standard library's scrypt)
+PyJWT==2.15.1
+# Encrypts sensitive onboarding data at rest (bank account numbers)
+cryptography==50.0.2
+# Validates and re-encodes profile photos (strips metadata)
+pillow==13.0.0
+
+# Policy documents: upload parsing, text extraction, embeddings and vector search
+python-multipart==0.0.33
+pypdf==7.0.0
+python-docx==1.2.0
+numpy==2.5.4
+faiss-cpu==1.15.1
+# Installs PyTorch (CPU build on Windows, ~200 MB). The embedding model (~90 MB) downloads on first use.
+sentence-transformers==6.2.0
+
+# Policy Assistant: HTTP client for the OpenAI-compatible LLM API
+httpx==0.28.1
+
+# Testing
+pytest==9.2.0

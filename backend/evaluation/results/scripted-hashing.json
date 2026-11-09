@@ -1,0 +1,3056 @@
+{
+  "meta": {
+    "mode": "scripted",
+    "disclaimer": "Deterministic pipeline evaluation with a scripted extractive generator (not an LLM). It measures retrieval, abstention gating, citation handling and the grounding validators. It does NOT measure the answer quality of an AI language model, and its answer metrics must not be reported as model accuracy.",
+    "generator": "scripted-extractive-reference (not an LLM)",
+    "llm_base_url_host": null,
+    "embedding_provider": "hashing",
+    "embedding_model": "hashing-384",
+    "chunking": {
+      "size": 500,
+      "overlap": 100
+    },
+    "retrieval": {
+      "top_k": 5,
+      "min_relevance": 0.15,
+      "strong_relevance": 0.4
+    },
+    "dataset_version": "1.0",
+    "cases": 45,
+    "generated_at": "2026-11-07T11:38:42+00:00",
+    "duration_seconds": 1.5,
+    "python": "3.13.7"
+  },
+  "aggregates": {
+    "cases_total": 45,
+    "cases_errored": 0,
+    "retrieval": {
+      "cases": 37,
+      "recall_at_1": 0.7297,
+      "recall_at_3": 0.973,
+      "recall_at_5": 0.973,
+      "mrr": 0.8739
+    },
+    "abstention": {
+      "unanswerable_cases": 8,
+      "correct_abstention_rate": 0.75,
+      "abstained_without_llm_call": 0,
+      "answerable_cases": 37,
+      "false_abstention_rate": 0.1081
+    },
+    "citations": {
+      "raw_markers": 41,
+      "raw_citation_validity": 1.0,
+      "final_citations_on_answerable": 38,
+      "citation_source_precision": 0.9737
+    },
+    "answers": {
+      "answered_answerable_cases": 33,
+      "key_fact_coverage_when_answered": 0.8125,
+      "key_fact_coverage_all_answerable": 0.7429,
+      "answers_with_unsupported_figures": 0,
+      "answers_with_uncited_claims": 0
+    },
+    "escalation": {
+      "agreement_rate": 0.6889,
+      "escalated_when_expected": 1.0,
+      "not_escalated_when_not_expected": 0.5758
+    },
+    "conflicts": {
+      "true_positives": 2,
+      "false_positives": 0,
+      "false_negatives": 0,
+      "true_negatives": 1,
+      "precision": 1.0,
+      "recall": 1.0
+    },
+    "injection": {
+      "cases": 2,
+      "answers_with_forbidden_content": 0
+    },
+    "by_category": {
+      "ambiguous": {
+        "cases": 2,
+        "answerability_correct": 0.5,
+        "escalation_matches": 1.0
+      },
+      "benefits": {
+        "cases": 4,
+        "answerability_correct": 1.0,
+        "escalation_matches": 0.75
+      },
+      "conflict": {
+        "cases": 2,
+        "answerability_correct": 1.0,
+        "escalation_matches": 1.0
+      },
+      "conflict_control": {
+        "cases": 1,
+        "answerability_correct": 1.0,
+        "escalation_matches": 1.0
+      },
+      "cross_document": {
+        "cases": 2,
+        "answerability_correct": 1.0,
+        "escalation_matches": 1.0
+      },
+      "dates": {
+        "cases": 10,
+        "answerability_correct": 0.8,
+        "escalation_matches": 0.6
+      },
+      "direct": {
+        "cases": 25,
+        "answerability_correct": 0.88,
+        "escalation_matches": 0.52
+      },
+      "follow_up": {
+        "cases": 3,
+        "answerability_correct": 1.0,
+        "escalation_matches": 0.6667
+      },
+      "injection": {
+        "cases": 2,
+        "answerability_correct": 1.0,
+        "escalation_matches": 0.5
+      },
+      "leave": {
+        "cases": 18,
+        "answerability_correct": 0.8333,
+        "escalation_matches": 0.7778
+      },
+      "numeric": {
+        "cases": 27,
+        "answerability_correct": 0.8889,
+        "escalation_matches": 0.7037
+      },
+      "paraphrase": {
+        "cases": 2,
+        "answerability_correct": 0.5,
+        "escalation_matches": 0.0
+      },
+      "salary": {
+        "cases": 8,
+        "answerability_correct": 0.875,
+        "escalation_matches": 0.625
+      },
+      "unanswerable": {
+        "cases": 8,
+        "answerability_correct": 0.75,
+        "escalation_matches": 1.0
+      }
+    }
+  },
+  "validator_probes": {
+    "unsupported_figures": {
+      "probes": 20,
+      "altered_figures_flagged_rate": 0.95,
+      "faithful_quotes_falsely_flagged_rate": 0.0,
+      "examples": [
+        {
+          "fact": "18 days",
+          "altered": "Annual leave Full-time employees receive 25 days of paid annual leave per calendar year. [S1]",
+          "flagged": true
+        },
+        {
+          "fact": "1.5 days per month",
+          "altered": "Annual leave accrues monthly at 8.5 days per month of service. [S1]",
+          "flagged": true
+        },
+        {
+          "fact": "3 working days in advance",
+          "altered": "Leave requests must be submitted in the HR portal at least 10 working days in advance. [S1]",
+          "flagged": true
+        }
+      ],
+      "method": "Sentences containing each numeric key fact are quoted faithfully and with the figure changed by +7; find_unsupported_figures is run on both against the source passage."
+    }
+  },
+  "cases": [
+    {
+      "id": "leave-annual-days",
+      "categories": [
+        "direct",
+        "numeric",
+        "leave"
+      ],
+      "corpus": "base",
+      "question": "How many days of paid annual leave do full-time employees receive?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "How many days of paid annual leave do full-time employees receive?",
+        "top_documents": [
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf",
+          "hybrid-work-policy.txt",
+          "hybrid-work-policy.txt",
+          "leave-and-attendance-policy.pdf"
+        ],
+        "top_scores": [
+          0.4291,
+          0.3117,
+          0.2435,
+          0.2369,
+          0.209
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Annual leave Full-time employees receive eighteen (18) days of paid annual leave per calendar year. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "strong",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "18 days"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "leave-and-attendance-policy.pdf"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": false,
+        "escalation_reason": null,
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "leave-vacation-paraphrase",
+      "categories": [
+        "direct",
+        "numeric",
+        "leave",
+        "paraphrase"
+      ],
+      "corpus": "base",
+      "question": "How much vacation time do I get each year?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "How much vacation time do I get each year?",
+        "top_documents": [
+          "leave-and-attendance-policy.pdf",
+          "information-security-policy.docx",
+          "leave-and-attendance-policy.pdf",
+          "payroll-and-compensation-policy.txt",
+          "payroll-and-compensation-policy.txt"
+        ],
+        "top_scores": [
+          0.1479,
+          0.1361,
+          0.12,
+          0.1145,
+          0.1001
+        ],
+        "recall_at_1": 0.0,
+        "recall_at_3": 0.0,
+        "recall_at_5": 0.0,
+        "reciprocal_rank": 0.0
+      },
+      "answer": {
+        "text": "I couldn't find enough information in the available company policies to answer this question. Please contact HR for clarification.",
+        "answered_from_documents": false,
+        "evidence_level": "insufficient",
+        "llm_called": false,
+        "fallback_reason": "below_relevance_threshold",
+        "key_facts_found": [],
+        "key_facts_missing": [
+          "18 days"
+        ],
+        "fact_coverage": 0.0,
+        "raw_citation_markers": 0,
+        "invalid_citation_markers": 0,
+        "cited_documents": [],
+        "cited_documents_expected": 0,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "No passage in the uploaded policies was relevant enough to this question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": false,
+        "escalation_matches": false,
+        "conflict_matches": null,
+        "all_key_facts_found": false,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "leave-accrual",
+      "categories": [
+        "direct",
+        "numeric",
+        "leave"
+      ],
+      "corpus": "base",
+      "question": "How does annual leave accrue?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "How does annual leave accrue?",
+        "top_documents": [
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf",
+          "information-security-policy.docx",
+          "information-security-policy.docx"
+        ],
+        "top_scores": [
+          0.3026,
+          0.1744,
+          0.1671,
+          0.1187,
+          0.1008
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Annual leave accrues monthly at 1.5 days per month of service. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "moderate",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "1.5 days per month"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "leave-and-attendance-policy.pdf"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": false,
+        "escalation_reason": null,
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "leave-request-notice",
+      "categories": [
+        "direct",
+        "numeric",
+        "dates",
+        "leave"
+      ],
+      "corpus": "base",
+      "question": "How far in advance must leave requests be submitted?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "How far in advance must leave requests be submitted?",
+        "top_documents": [
+          "leave-and-attendance-policy.pdf",
+          "hybrid-work-policy.txt",
+          "leave-and-attendance-policy.pdf",
+          "hybrid-work-policy.txt",
+          "information-security-policy.docx"
+        ],
+        "top_scores": [
+          0.367,
+          0.2449,
+          0.1911,
+          0.1888,
+          0.1886
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Leave requests must be submitted in the HR portal at least three working days in advance. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "moderate",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "3 working days in advance"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "leave-and-attendance-policy.pdf"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": false,
+        "escalation_reason": null,
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "leave-sick-days",
+      "categories": [
+        "direct",
+        "numeric",
+        "leave"
+      ],
+      "corpus": "base",
+      "question": "How many days of paid sick leave am I entitled to?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "How many days of paid sick leave am I entitled to?",
+        "top_documents": [
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf",
+          "hybrid-work-policy.txt",
+          "hybrid-work-policy.txt",
+          "leave-and-attendance-policy.pdf"
+        ],
+        "top_scores": [
+          0.3914,
+          0.2906,
+          0.2204,
+          0.2039,
+          0.1875
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Sick leave Employees are entitled to eight (8) days of paid sick leave per calendar year. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "moderate",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "8 days"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "leave-and-attendance-policy.pdf"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": false,
+        "escalation_reason": null,
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "leave-medical-certificate",
+      "categories": [
+        "direct",
+        "numeric",
+        "leave"
+      ],
+      "corpus": "base",
+      "question": "When do I need a medical certificate for sick leave?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "When do I need a medical certificate for sick leave?",
+        "top_documents": [
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf",
+          "hybrid-work-policy.txt",
+          "hybrid-work-policy.txt",
+          "information-security-policy.docx"
+        ],
+        "top_scores": [
+          0.3258,
+          0.1643,
+          0.1607,
+          0.1593,
+          0.1561
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Sick leave Employees are entitled to eight (8) days of paid sick leave per calendar year. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "moderate",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [],
+        "key_facts_missing": [
+          "3 consecutive days"
+        ],
+        "fact_coverage": 0.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "leave-and-attendance-policy.pdf"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": false,
+        "escalation_reason": null,
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": false,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "leave-public-holidays",
+      "categories": [
+        "direct",
+        "numeric",
+        "dates",
+        "leave"
+      ],
+      "corpus": "base",
+      "question": "How many public holidays does the company observe?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "How many public holidays does the company observe?",
+        "top_documents": [
+          "leave-and-attendance-policy.pdf",
+          "payroll-and-compensation-policy.txt",
+          "hybrid-work-policy.txt",
+          "information-security-policy.docx",
+          "information-security-policy.docx"
+        ],
+        "top_scores": [
+          0.2509,
+          0.1933,
+          0.1793,
+          0.1757,
+          0.1532
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Public holidays The company observes ten public holidays each year. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "weak",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "10 public holidays"
+        ],
+        "key_facts_missing": [
+          "published every january"
+        ],
+        "fact_coverage": 0.5,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "leave-and-attendance-policy.pdf"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "The matching policy passages are only loosely related to the question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": false,
+        "conflict_matches": null,
+        "all_key_facts_found": false,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "leave-carry-forward",
+      "categories": [
+        "direct",
+        "numeric",
+        "dates",
+        "leave"
+      ],
+      "corpus": "base",
+      "question": "Can unused annual leave be carried forward into the next year?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "Can unused annual leave be carried forward into the next year?",
+        "top_documents": [
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf",
+          "hybrid-work-policy.txt",
+          "payroll-and-compensation-policy.txt"
+        ],
+        "top_scores": [
+          0.4688,
+          0.2906,
+          0.261,
+          0.1928,
+          0.1746
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Carry forward and encashment Up to ten unused annual leave days may be carried forward into the next calendar year. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "strong",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "up to 10 unused annual leave days"
+        ],
+        "key_facts_missing": [
+          "march 31"
+        ],
+        "fact_coverage": 0.5,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "leave-and-attendance-policy.pdf"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": false,
+        "escalation_reason": null,
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": false,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "leave-encashment",
+      "categories": [
+        "direct",
+        "leave"
+      ],
+      "corpus": "base",
+      "question": "Can leave be encashed?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "Can leave be encashed?",
+        "top_documents": [
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf",
+          "information-security-policy.docx",
+          "information-security-policy.docx"
+        ],
+        "top_scores": [
+          0.2707,
+          0.2288,
+          0.226,
+          0.084,
+          0.083
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Leave cannot be encashed except at the end of employment, as required by local law. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "weak",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "end of employment"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "leave-and-attendance-policy.pdf"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "The matching policy passages are only loosely related to the question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": false,
+        "conflict_matches": null,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "core-hours",
+      "categories": [
+        "direct",
+        "numeric",
+        "dates"
+      ],
+      "corpus": "base",
+      "question": "What are the core collaboration hours?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "What are the core collaboration hours?",
+        "top_documents": [
+          "leave-and-attendance-policy.pdf",
+          "hybrid-work-policy.txt",
+          "payroll-and-compensation-policy.txt",
+          "leave-and-attendance-policy.pdf",
+          "information-security-policy.docx"
+        ],
+        "top_scores": [
+          0.2807,
+          0.2582,
+          0.2445,
+          0.2028,
+          0.1823
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Attendance Core collaboration hours are 10:00 AM to 4:00 PM on working days. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "moderate",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "10:00 am",
+          "4:00 pm"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "leave-and-attendance-policy.pdf"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": false,
+        "escalation_reason": null,
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "security-password-length",
+      "categories": [
+        "direct",
+        "numeric"
+      ],
+      "corpus": "base",
+      "question": "How long must my password be?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "How long must my password be?",
+        "top_documents": [
+          "hybrid-work-policy.txt",
+          "information-security-policy.docx",
+          "information-security-policy.docx",
+          "leave-and-attendance-policy.pdf",
+          "hybrid-work-policy.txt"
+        ],
+        "top_scores": [
+          0.2113,
+          0.201,
+          0.1986,
+          0.1943,
+          0.0952
+        ],
+        "recall_at_1": 0.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 0.5
+      },
+      "answer": {
+        "text": "- According to the policy: Passwords and Authentication Passwords must be at least fourteen characters long and must not be reused across systems. [S2]",
+        "answered_from_documents": true,
+        "evidence_level": "weak",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "14 characters"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "information-security-policy.docx"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "The matching policy passages are only loosely related to the question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": false,
+        "conflict_matches": null,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "security-mfa",
+      "categories": [
+        "direct"
+      ],
+      "corpus": "base",
+      "question": "Is multi-factor authentication required?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "Is multi-factor authentication required?",
+        "top_documents": [
+          "information-security-policy.docx",
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf",
+          "payroll-and-compensation-policy.txt",
+          "leave-and-attendance-policy.pdf"
+        ],
+        "top_scores": [
+          0.3333,
+          0.1432,
+          0.1246,
+          0.0832,
+          0.0807
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Multi-factor authentication is mandatory for email, VPN and all business applications. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "moderate",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "multi-factor authentication is mandatory"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "information-security-policy.docx"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": false,
+        "escalation_reason": null,
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "security-report-phishing",
+      "categories": [
+        "direct"
+      ],
+      "corpus": "base",
+      "question": "How do I report a phishing email?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "How do I report a phishing email?",
+        "top_documents": [
+          "information-security-policy.docx",
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf",
+          "payroll-and-compensation-policy.txt",
+          "leave-and-attendance-policy.pdf"
+        ],
+        "top_scores": [
+          0.1468,
+          0.1451,
+          0.1175,
+          0.1038,
+          0.0993
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "I couldn't find enough information in the available company policies to answer this question. Please contact HR for clarification.",
+        "answered_from_documents": false,
+        "evidence_level": "insufficient",
+        "llm_called": false,
+        "fallback_reason": "below_relevance_threshold",
+        "key_facts_found": [],
+        "key_facts_missing": [
+          "report phishing button",
+          "it security team"
+        ],
+        "fact_coverage": 0.0,
+        "raw_citation_markers": 0,
+        "invalid_citation_markers": 0,
+        "cited_documents": [],
+        "cited_documents_expected": 0,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "No passage in the uploaded policies was relevant enough to this question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": false,
+        "escalation_matches": false,
+        "conflict_matches": null,
+        "all_key_facts_found": false,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "security-entered-password",
+      "categories": [
+        "direct",
+        "paraphrase"
+      ],
+      "corpus": "base",
+      "question": "I typed my password into a suspicious website. What should I do?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "I typed my password into a suspicious website. What should I do?",
+        "top_documents": [
+          "hybrid-work-policy.txt",
+          "information-security-policy.docx",
+          "payroll-and-compensation-policy.txt",
+          "hybrid-work-policy.txt",
+          "payroll-and-compensation-policy.txt"
+        ],
+        "top_scores": [
+          0.1894,
+          0.1814,
+          0.1746,
+          0.1713,
+          0.1372
+        ],
+        "recall_at_1": 0.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 0.5
+      },
+      "answer": {
+        "text": "- According to the policy: If you entered your password on a suspicious site, change it immediately and contact the IT help desk. [S2]",
+        "answered_from_documents": true,
+        "evidence_level": "weak",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "change it immediately",
+          "it help desk"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "information-security-policy.docx"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "The matching policy passages are only loosely related to the question. The retrieved policies don't mention 'typed', 'website', so they may not fully answer this question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": false,
+        "conflict_matches": null,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "security-screen-lock",
+      "categories": [
+        "direct",
+        "numeric"
+      ],
+      "corpus": "base",
+      "question": "After how many minutes must a company laptop lock the screen automatically?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "After how many minutes must a company laptop lock the screen automatically?",
+        "top_documents": [
+          "information-security-policy.docx",
+          "hybrid-work-policy.txt",
+          "hybrid-work-policy.txt",
+          "information-security-policy.docx",
+          "payroll-and-compensation-policy.txt"
+        ],
+        "top_scores": [
+          0.2415,
+          0.1868,
+          0.1515,
+          0.1512,
+          0.1497
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Devices and Data Company laptops must use full-disk encryption and automatic screen lock after five minutes. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "weak",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "screen lock after 5 minutes"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "information-security-policy.docx"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "The matching policy passages are only loosely related to the question. The retrieved policies don't mention 'automatically', so they may not fully answer this question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": false,
+        "conflict_matches": null,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "security-personal-storage",
+      "categories": [
+        "direct"
+      ],
+      "corpus": "base",
+      "question": "Can I store confidential data on my personal cloud storage?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "Can I store confidential data on my personal cloud storage?",
+        "top_documents": [
+          "information-security-policy.docx",
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf",
+          "payroll-and-compensation-policy.txt"
+        ],
+        "top_scores": [
+          0.3274,
+          0.2229,
+          0.1807,
+          0.1666,
+          0.1335
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Confidential data must not be stored on personal devices or personal cloud storage. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "moderate",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "personal cloud storage"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "information-security-policy.docx"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "The retrieved policies don't mention 'store', so they may not fully answer this question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": false,
+        "conflict_matches": null,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "payroll-pay-date",
+      "categories": [
+        "direct",
+        "salary",
+        "dates"
+      ],
+      "corpus": "base",
+      "question": "When are salaries paid?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "When are salaries paid?",
+        "top_documents": [
+          "payroll-and-compensation-policy.txt",
+          "information-security-policy.docx",
+          "information-security-policy.docx",
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf"
+        ],
+        "top_scores": [
+          0.165,
+          0.126,
+          0.0857,
+          0.0848,
+          0.0812
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Pay schedule Salaries are paid monthly on the last working day of each month. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "weak",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "last working day of each month"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "payroll-and-compensation-policy.txt"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "The matching policy passages are only loosely related to the question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": false,
+        "conflict_matches": null,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "payroll-payslip",
+      "categories": [
+        "direct",
+        "salary",
+        "numeric",
+        "dates"
+      ],
+      "corpus": "base",
+      "question": "When are payslips available?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "When are payslips available?",
+        "top_documents": [
+          "payroll-and-compensation-policy.txt",
+          "information-security-policy.docx",
+          "hybrid-work-policy.txt",
+          "information-security-policy.docx",
+          "hybrid-work-policy.txt"
+        ],
+        "top_scores": [
+          0.1415,
+          0.126,
+          0.0954,
+          0.0857,
+          0.0588
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "I couldn't find enough information in the available company policies to answer this question. Please contact HR for clarification.",
+        "answered_from_documents": false,
+        "evidence_level": "insufficient",
+        "llm_called": false,
+        "fallback_reason": "below_relevance_threshold",
+        "key_facts_found": [],
+        "key_facts_missing": [
+          "2 working days before the payment date"
+        ],
+        "fact_coverage": 0.0,
+        "raw_citation_markers": 0,
+        "invalid_citation_markers": 0,
+        "cited_documents": [],
+        "cited_documents_expected": 0,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "No passage in the uploaded policies was relevant enough to this question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": false,
+        "escalation_matches": false,
+        "conflict_matches": null,
+        "all_key_facts_found": false,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "payroll-late-joiner",
+      "categories": [
+        "direct",
+        "salary",
+        "numeric",
+        "dates"
+      ],
+      "corpus": "base",
+      "question": "If I join after the twentieth of the month, when do I receive my first salary?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "If I join after the twentieth of the month, when do I receive my first salary?",
+        "top_documents": [
+          "payroll-and-compensation-policy.txt",
+          "payroll-and-compensation-policy.txt",
+          "hybrid-work-policy.txt",
+          "information-security-policy.docx",
+          "leave-and-attendance-policy.pdf"
+        ],
+        "top_scores": [
+          0.4771,
+          0.2923,
+          0.2563,
+          0.2125,
+          0.2101
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Employees who join after the twentieth receive their first pro-rated salary in the following month's payroll. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "strong",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "following month's payroll"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "payroll-and-compensation-policy.txt"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": false,
+        "escalation_reason": null,
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "payroll-reimbursement",
+      "categories": [
+        "direct",
+        "salary",
+        "numeric",
+        "dates"
+      ],
+      "corpus": "base",
+      "question": "When are approved business expenses reimbursed?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "When are approved business expenses reimbursed?",
+        "top_documents": [
+          "information-security-policy.docx",
+          "payroll-and-compensation-policy.txt",
+          "payroll-and-compensation-policy.txt",
+          "leave-and-attendance-policy.pdf",
+          "information-security-policy.docx"
+        ],
+        "top_scores": [
+          0.201,
+          0.1755,
+          0.094,
+          0.0864,
+          0.0684
+        ],
+        "recall_at_1": 0.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 0.5
+      },
+      "answer": {
+        "text": "- According to the policy: Reimbursements Approved business expenses submitted by the fifteenth of the month are reimbursed with that month's salary. [S2]",
+        "answered_from_documents": true,
+        "evidence_level": "weak",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "15 of the month",
+          "that month's salary"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "payroll-and-compensation-policy.txt"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "The matching policy passages are only loosely related to the question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": false,
+        "conflict_matches": null,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "payroll-onboarding-details",
+      "categories": [
+        "direct",
+        "salary"
+      ],
+      "corpus": "base",
+      "question": "What payroll details must I submit during onboarding?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "What payroll details must I submit during onboarding?",
+        "top_documents": [
+          "payroll-and-compensation-policy.txt",
+          "information-security-policy.docx",
+          "information-security-policy.docx",
+          "payroll-and-compensation-policy.txt",
+          "hybrid-work-policy.txt"
+        ],
+        "top_scores": [
+          0.2817,
+          0.17,
+          0.1434,
+          0.1127,
+          0.1005
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Bank and tax details Submit your salary bank account details and tax declaration during onboarding. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "moderate",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "bank account details",
+          "tax declaration"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "payroll-and-compensation-policy.txt"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": false,
+        "escalation_reason": null,
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "hybrid-remote-days",
+      "categories": [
+        "direct",
+        "numeric"
+      ],
+      "corpus": "base",
+      "question": "How many days per week can I work remotely?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "How many days per week can I work remotely?",
+        "top_documents": [
+          "hybrid-work-policy.txt",
+          "hybrid-work-policy.txt",
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf"
+        ],
+        "top_scores": [
+          0.2909,
+          0.2266,
+          0.2055,
+          0.1994,
+          0.1737
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Eligibility Employees who have completed their first thirty days of service may work remotely up to two days per week, with their manager's approval. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "moderate",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "2 days per week",
+          "manager's approval"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "hybrid-work-policy.txt"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": false,
+        "escalation_reason": null,
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "hybrid-first-month",
+      "categories": [
+        "direct",
+        "numeric"
+      ],
+      "corpus": "base",
+      "question": "Can new hires work remotely during their first thirty days?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "Can new hires work remotely during their first thirty days?",
+        "top_documents": [
+          "hybrid-work-policy.txt",
+          "payroll-and-compensation-policy.txt",
+          "hybrid-work-policy.txt",
+          "leave-and-attendance-policy.pdf",
+          "payroll-and-compensation-policy.txt"
+        ],
+        "top_scores": [
+          0.4199,
+          0.2503,
+          0.1786,
+          0.1715,
+          0.1288
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Eligibility Employees who have completed their first thirty days of service may work remotely up to two days per week, with their manager's approval. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "strong",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [],
+        "key_facts_missing": [
+          "work from the office"
+        ],
+        "fact_coverage": 0.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "hybrid-work-policy.txt"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": false,
+        "escalation_reason": null,
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": false,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "hybrid-home-office-allowance",
+      "categories": [
+        "direct",
+        "numeric",
+        "benefits"
+      ],
+      "corpus": "base",
+      "question": "Is there a home office allowance and when can I get it?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "Is there a home office allowance and when can I get it?",
+        "top_documents": [
+          "hybrid-work-policy.txt",
+          "leave-and-attendance-policy.pdf",
+          "information-security-policy.docx",
+          "leave-and-attendance-policy.pdf",
+          "payroll-and-compensation-policy.txt"
+        ],
+        "top_scores": [
+          0.2922,
+          0.2338,
+          0.2207,
+          0.209,
+          0.2081
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: A one-time home office allowance is available after ninety days of service. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "moderate",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "home office allowance",
+          "90 days of service"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "hybrid-work-policy.txt"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": false,
+        "escalation_reason": null,
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "hybrid-equipment",
+      "categories": [
+        "direct",
+        "benefits"
+      ],
+      "corpus": "base",
+      "question": "What equipment does the company provide for remote work?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "What equipment does the company provide for remote work?",
+        "top_documents": [
+          "hybrid-work-policy.txt",
+          "hybrid-work-policy.txt",
+          "leave-and-attendance-policy.pdf",
+          "payroll-and-compensation-policy.txt",
+          "information-security-policy.docx"
+        ],
+        "top_scores": [
+          0.2643,
+          0.2602,
+          0.2175,
+          0.1967,
+          0.1833
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Equipment The company provides a laptop and headset. [S1]\n- According to the policy: Hybrid Work Policy SAMPLE POLICY - fictional content for the OnboardIQ demo. [S2]",
+        "answered_from_documents": true,
+        "evidence_level": "weak",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "laptop and headset"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 2,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "hybrid-work-policy.txt",
+          "hybrid-work-policy.txt"
+        ],
+        "cited_documents_expected": 2,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "The matching policy passages are only loosely related to the question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": false,
+        "conflict_matches": null,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "cross-leave-and-remote",
+      "categories": [
+        "cross_document",
+        "numeric",
+        "leave"
+      ],
+      "corpus": "base",
+      "question": "How many days of paid annual leave do I get, and after how many days of service can I work remotely?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "How many days of paid annual leave do I get, and after how many days of service can I work remotely?",
+        "top_documents": [
+          "leave-and-attendance-policy.pdf",
+          "hybrid-work-policy.txt",
+          "hybrid-work-policy.txt",
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf"
+        ],
+        "top_scores": [
+          0.3603,
+          0.3187,
+          0.3053,
+          0.2967,
+          0.2487
+        ],
+        "recall_at_1": 0.5,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Annual leave Full-time employees receive eighteen (18) days of paid annual leave per calendar year. [S1]\n- According to the policy: Eligibility Employees who have completed their first thirty days of service may work remotely up to two days per week, with their manager's approval. [S3]",
+        "answered_from_documents": true,
+        "evidence_level": "moderate",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "18 days",
+          "30 days of service"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 2,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "leave-and-attendance-policy.pdf",
+          "hybrid-work-policy.txt"
+        ],
+        "cited_documents_expected": 2,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": false,
+        "escalation_reason": null,
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "cross-payroll-and-password",
+      "categories": [
+        "cross_document",
+        "numeric",
+        "salary"
+      ],
+      "corpus": "base",
+      "question": "What tax and bank details must I submit, and how long must my password be?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "What tax and bank details must I submit, and how long must my password be?",
+        "top_documents": [
+          "information-security-policy.docx",
+          "payroll-and-compensation-policy.txt",
+          "information-security-policy.docx",
+          "hybrid-work-policy.txt",
+          "leave-and-attendance-policy.pdf"
+        ],
+        "top_scores": [
+          0.3381,
+          0.2705,
+          0.2412,
+          0.2237,
+          0.1937
+        ],
+        "recall_at_1": 0.5,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Bank and tax details Submit your salary bank account details and tax declaration during onboarding. [S2]\n- According to the policy: Passwords and Authentication Passwords must be at least fourteen characters long and must not be reused across systems. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "moderate",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "tax declaration",
+          "14 characters"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 2,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "payroll-and-compensation-policy.txt",
+          "information-security-policy.docx"
+        ],
+        "cited_documents_expected": 2,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": false,
+        "escalation_reason": null,
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "unanswerable-parental-leave",
+      "categories": [
+        "unanswerable",
+        "leave"
+      ],
+      "corpus": "base",
+      "question": "What is the parental leave policy?",
+      "answerable": false,
+      "expect_escalation": true,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "What is the parental leave policy?",
+        "top_documents": [
+          "information-security-policy.docx",
+          "leave-and-attendance-policy.pdf",
+          "information-security-policy.docx",
+          "payroll-and-compensation-policy.txt",
+          "hybrid-work-policy.txt"
+        ],
+        "top_scores": [
+          0.395,
+          0.2686,
+          0.2516,
+          0.2422,
+          0.2101
+        ],
+        "recall_at_1": null,
+        "recall_at_3": null,
+        "recall_at_5": null,
+        "reciprocal_rank": null
+      },
+      "answer": {
+        "text": "- According to the policy: Leave and Attendance Policy SAMPLE POLICY - fictional content for the OnboardIQ demo. [S2]",
+        "answered_from_documents": true,
+        "evidence_level": "moderate",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [],
+        "key_facts_missing": [],
+        "fact_coverage": null,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "leave-and-attendance-policy.pdf"
+        ],
+        "cited_documents_expected": 0,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "The retrieved policies don't mention 'parental', so they may not fully answer this question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": false,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": null,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "unanswerable-maternity-days",
+      "categories": [
+        "unanswerable",
+        "numeric",
+        "leave"
+      ],
+      "corpus": "base",
+      "question": "How many weeks of maternity leave do I get?",
+      "answerable": false,
+      "expect_escalation": true,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "How many weeks of maternity leave do I get?",
+        "top_documents": [
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf",
+          "hybrid-work-policy.txt",
+          "information-security-policy.docx",
+          "leave-and-attendance-policy.pdf"
+        ],
+        "top_scores": [
+          0.2175,
+          0.2055,
+          0.1684,
+          0.1439,
+          0.1389
+        ],
+        "recall_at_1": null,
+        "recall_at_3": null,
+        "recall_at_5": null,
+        "reciprocal_rank": null
+      },
+      "answer": {
+        "text": "- According to the policy: Sick leave Employees are entitled to eight (8) days of paid sick leave per calendar year. [S1]\n- According to the policy: Eligibility Employees who have completed their first thirty days of service may work remotely up to two days per week, with their manager's approval. [S3]",
+        "answered_from_documents": true,
+        "evidence_level": "weak",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [],
+        "key_facts_missing": [],
+        "fact_coverage": null,
+        "raw_citation_markers": 2,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "leave-and-attendance-policy.pdf",
+          "hybrid-work-policy.txt"
+        ],
+        "cited_documents_expected": 0,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "The matching policy passages are only loosely related to the question. The retrieved policies don't mention 'maternity', so they may not fully answer this question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": false,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": null,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "unanswerable-salary-amount",
+      "categories": [
+        "unanswerable",
+        "salary",
+        "numeric"
+      ],
+      "corpus": "base",
+      "question": "What is my exact annual salary amount?",
+      "answerable": false,
+      "expect_escalation": true,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "What is my exact annual salary amount?",
+        "top_documents": [
+          "information-security-policy.docx",
+          "payroll-and-compensation-policy.txt",
+          "leave-and-attendance-policy.pdf",
+          "hybrid-work-policy.txt",
+          "information-security-policy.docx"
+        ],
+        "top_scores": [
+          0.1757,
+          0.1315,
+          0.1294,
+          0.1206,
+          0.1148
+        ],
+        "recall_at_1": null,
+        "recall_at_3": null,
+        "recall_at_5": null,
+        "reciprocal_rank": null
+      },
+      "answer": {
+        "text": "I couldn't find enough information in the available company policies to answer this question. Please contact HR for clarification.",
+        "answered_from_documents": false,
+        "evidence_level": "insufficient",
+        "llm_called": true,
+        "fallback_reason": "model_abstained",
+        "key_facts_found": [],
+        "key_facts_missing": [],
+        "fact_coverage": null,
+        "raw_citation_markers": 0,
+        "invalid_citation_markers": 0,
+        "cited_documents": [],
+        "cited_documents_expected": 0,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "The relevant policy passages don't answer this question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": null,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "unanswerable-dress-code",
+      "categories": [
+        "unanswerable"
+      ],
+      "corpus": "base",
+      "question": "What is the dress code?",
+      "answerable": false,
+      "expect_escalation": true,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "What is the dress code?",
+        "top_documents": [
+          "information-security-policy.docx",
+          "payroll-and-compensation-policy.txt",
+          "leave-and-attendance-policy.pdf",
+          "hybrid-work-policy.txt",
+          "hybrid-work-policy.txt"
+        ],
+        "top_scores": [
+          0.2016,
+          0.1871,
+          0.1246,
+          0.1052,
+          0.1038
+        ],
+        "recall_at_1": null,
+        "recall_at_3": null,
+        "recall_at_5": null,
+        "reciprocal_rank": null
+      },
+      "answer": {
+        "text": "I couldn't find enough information in the available company policies to answer this question. Please contact HR for clarification.",
+        "answered_from_documents": false,
+        "evidence_level": "insufficient",
+        "llm_called": true,
+        "fallback_reason": "model_abstained",
+        "key_facts_found": [],
+        "key_facts_missing": [],
+        "fact_coverage": null,
+        "raw_citation_markers": 0,
+        "invalid_citation_markers": 0,
+        "cited_documents": [],
+        "cited_documents_expected": 0,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "The relevant policy passages don't answer this question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": null,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "unanswerable-gym",
+      "categories": [
+        "unanswerable",
+        "benefits"
+      ],
+      "corpus": "base",
+      "question": "Is there a gym membership benefit?",
+      "answerable": false,
+      "expect_escalation": true,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "Is there a gym membership benefit?",
+        "top_documents": [
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf",
+          "information-security-policy.docx",
+          "hybrid-work-policy.txt",
+          "payroll-and-compensation-policy.txt"
+        ],
+        "top_scores": [
+          0.2028,
+          0.108,
+          0.1073,
+          0.0761,
+          0.0752
+        ],
+        "recall_at_1": null,
+        "recall_at_3": null,
+        "recall_at_5": null,
+        "reciprocal_rank": null
+      },
+      "answer": {
+        "text": "I couldn't find enough information in the available company policies to answer this question. Please contact HR for clarification.",
+        "answered_from_documents": false,
+        "evidence_level": "insufficient",
+        "llm_called": true,
+        "fallback_reason": "model_abstained",
+        "key_facts_found": [],
+        "key_facts_missing": [],
+        "fact_coverage": null,
+        "raw_citation_markers": 0,
+        "invalid_citation_markers": 0,
+        "cited_documents": [],
+        "cited_documents_expected": 0,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "The relevant policy passages don't answer this question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": null,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "unanswerable-stock-options",
+      "categories": [
+        "unanswerable",
+        "benefits"
+      ],
+      "corpus": "base",
+      "question": "What is the stock option vesting schedule?",
+      "answerable": false,
+      "expect_escalation": true,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "What is the stock option vesting schedule?",
+        "top_documents": [
+          "information-security-policy.docx",
+          "hybrid-work-policy.txt",
+          "leave-and-attendance-policy.pdf",
+          "payroll-and-compensation-policy.txt",
+          "information-security-policy.docx"
+        ],
+        "top_scores": [
+          0.1887,
+          0.1576,
+          0.1451,
+          0.1384,
+          0.1218
+        ],
+        "recall_at_1": null,
+        "recall_at_3": null,
+        "recall_at_5": null,
+        "reciprocal_rank": null
+      },
+      "answer": {
+        "text": "I couldn't find enough information in the available company policies to answer this question. Please contact HR for clarification.",
+        "answered_from_documents": false,
+        "evidence_level": "insufficient",
+        "llm_called": true,
+        "fallback_reason": "model_abstained",
+        "key_facts_found": [],
+        "key_facts_missing": [],
+        "fact_coverage": null,
+        "raw_citation_markers": 0,
+        "invalid_citation_markers": 0,
+        "cited_documents": [],
+        "cited_documents_expected": 0,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "The relevant policy passages don't answer this question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": null,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "unanswerable-meeting-room",
+      "categories": [
+        "unanswerable"
+      ],
+      "corpus": "base",
+      "question": "How do I book a meeting room?",
+      "answerable": false,
+      "expect_escalation": true,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "How do I book a meeting room?",
+        "top_documents": [
+          "payroll-and-compensation-policy.txt",
+          "hybrid-work-policy.txt",
+          "payroll-and-compensation-policy.txt",
+          "leave-and-attendance-policy.pdf",
+          "information-security-policy.docx"
+        ],
+        "top_scores": [
+          0.1557,
+          0.1296,
+          0.1009,
+          0.0829,
+          0.0629
+        ],
+        "recall_at_1": null,
+        "recall_at_3": null,
+        "recall_at_5": null,
+        "reciprocal_rank": null
+      },
+      "answer": {
+        "text": "I couldn't find enough information in the available company policies to answer this question. Please contact HR for clarification.",
+        "answered_from_documents": false,
+        "evidence_level": "insufficient",
+        "llm_called": true,
+        "fallback_reason": "model_abstained",
+        "key_facts_found": [],
+        "key_facts_missing": [],
+        "fact_coverage": null,
+        "raw_citation_markers": 0,
+        "invalid_citation_markers": 0,
+        "cited_documents": [],
+        "cited_documents_expected": 0,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "The relevant policy passages don't answer this question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": null,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "unanswerable-off-topic",
+      "categories": [
+        "unanswerable"
+      ],
+      "corpus": "base",
+      "question": "What is the capital of France?",
+      "answerable": false,
+      "expect_escalation": true,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "What is the capital of France?",
+        "top_documents": [
+          "information-security-policy.docx",
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf",
+          "payroll-and-compensation-policy.txt",
+          "hybrid-work-policy.txt"
+        ],
+        "top_scores": [
+          0.1887,
+          0.1658,
+          0.1589,
+          0.1557,
+          0.1511
+        ],
+        "recall_at_1": null,
+        "recall_at_3": null,
+        "recall_at_5": null,
+        "reciprocal_rank": null
+      },
+      "answer": {
+        "text": "I couldn't find enough information in the available company policies to answer this question. Please contact HR for clarification.",
+        "answered_from_documents": false,
+        "evidence_level": "insufficient",
+        "llm_called": true,
+        "fallback_reason": "model_abstained",
+        "key_facts_found": [],
+        "key_facts_missing": [],
+        "fact_coverage": null,
+        "raw_citation_markers": 0,
+        "invalid_citation_markers": 0,
+        "cited_documents": [],
+        "cited_documents_expected": 0,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "The relevant policy passages don't answer this question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": null,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "ambiguous-how-many-days",
+      "categories": [
+        "ambiguous",
+        "leave"
+      ],
+      "corpus": "base",
+      "question": "How many days do I get?",
+      "answerable": true,
+      "expect_escalation": true,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "How many days do I get?",
+        "top_documents": [
+          "hybrid-work-policy.txt",
+          "information-security-policy.docx",
+          "leave-and-attendance-policy.pdf",
+          "hybrid-work-policy.txt",
+          "information-security-policy.docx"
+        ],
+        "top_scores": [
+          0.1903,
+          0.1789,
+          0.1642,
+          0.1408,
+          0.1368
+        ],
+        "recall_at_1": 0.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 0.3333333333333333
+      },
+      "answer": {
+        "text": "- According to the policy: Eligibility Employees who have completed their first thirty days of service may work remotely up to two days per week, with their manager's approval. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "weak",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [],
+        "key_facts_missing": [],
+        "fact_coverage": null,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "hybrid-work-policy.txt"
+        ],
+        "cited_documents_expected": 0,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "The matching policy passages are only loosely related to the question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": null,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "ambiguous-deadline",
+      "categories": [
+        "ambiguous",
+        "dates"
+      ],
+      "corpus": "base",
+      "question": "What is the deadline?",
+      "answerable": true,
+      "expect_escalation": true,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "What is the deadline?",
+        "top_documents": [
+          "information-security-policy.docx",
+          "payroll-and-compensation-policy.txt",
+          "leave-and-attendance-policy.pdf",
+          "hybrid-work-policy.txt",
+          "leave-and-attendance-policy.pdf"
+        ],
+        "top_scores": [
+          0.2286,
+          0.1886,
+          0.1413,
+          0.1193,
+          0.1144
+        ],
+        "recall_at_1": 0.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 0.5
+      },
+      "answer": {
+        "text": "I couldn't find enough information in the available company policies to answer this question. Please contact HR for clarification.",
+        "answered_from_documents": false,
+        "evidence_level": "insufficient",
+        "llm_called": true,
+        "fallback_reason": "model_abstained",
+        "key_facts_found": [],
+        "key_facts_missing": [],
+        "fact_coverage": null,
+        "raw_citation_markers": 0,
+        "invalid_citation_markers": 0,
+        "cited_documents": [],
+        "cited_documents_expected": 0,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "The relevant policy passages don't answer this question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": false,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": null,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "followup-annual-after-sick",
+      "categories": [
+        "follow_up",
+        "numeric",
+        "leave"
+      ],
+      "corpus": "base",
+      "question": "and what about annual leave?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "How many days of paid sick leave do I get? and what about annual leave?",
+        "top_documents": [
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf",
+          "hybrid-work-policy.txt",
+          "hybrid-work-policy.txt"
+        ],
+        "top_scores": [
+          0.4131,
+          0.4027,
+          0.2444,
+          0.2381,
+          0.2377
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Annual leave Full-time employees receive eighteen (18) days of paid annual leave per calendar year. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "strong",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "18 days"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "leave-and-attendance-policy.pdf"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": false,
+        "escalation_reason": null,
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "followup-late-joiner",
+      "categories": [
+        "follow_up",
+        "salary",
+        "dates"
+      ],
+      "corpus": "base",
+      "question": "what if I join after the twentieth?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "When are salaries paid? what if I join after the twentieth?",
+        "top_documents": [
+          "payroll-and-compensation-policy.txt",
+          "payroll-and-compensation-policy.txt",
+          "information-security-policy.docx",
+          "hybrid-work-policy.txt",
+          "leave-and-attendance-policy.pdf"
+        ],
+        "top_scores": [
+          0.2869,
+          0.2619,
+          0.1965,
+          0.1767,
+          0.1495
+        ],
+        "recall_at_1": 0.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 0.5
+      },
+      "answer": {
+        "text": "- According to the policy: New joiners Employees who join on or before the twentieth day of a month are paid for that partial month in the same payroll cycle. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "moderate",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [],
+        "key_facts_missing": [
+          "following month's payroll"
+        ],
+        "fact_coverage": 0.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "payroll-and-compensation-policy.txt"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": false,
+        "escalation_reason": null,
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": false,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "followup-remote-first-month",
+      "categories": [
+        "follow_up",
+        "numeric"
+      ],
+      "corpus": "base",
+      "question": "does that apply during my first thirty days?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "Can I work remotely? does that apply during my first thirty days?",
+        "top_documents": [
+          "hybrid-work-policy.txt",
+          "payroll-and-compensation-policy.txt",
+          "hybrid-work-policy.txt",
+          "leave-and-attendance-policy.pdf",
+          "payroll-and-compensation-policy.txt"
+        ],
+        "top_scores": [
+          0.3156,
+          0.2619,
+          0.2024,
+          0.1794,
+          0.1747
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Eligibility Employees who have completed their first thirty days of service may work remotely up to two days per week, with their manager's approval. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "moderate",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [],
+        "key_facts_missing": [
+          "work from the office"
+        ],
+        "fact_coverage": 0.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "hybrid-work-policy.txt"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "The retrieved policies don't mention 'apply', so they may not fully answer this question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": false,
+        "conflict_matches": null,
+        "all_key_facts_found": false,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "conflict-annual-days",
+      "categories": [
+        "conflict",
+        "numeric",
+        "leave"
+      ],
+      "corpus": "conflict",
+      "question": "How many days of paid annual leave do full-time employees receive?",
+      "answerable": true,
+      "expect_escalation": true,
+      "expect_conflict": true,
+      "retrieval": {
+        "query": "How many days of paid annual leave do full-time employees receive?",
+        "top_documents": [
+          "leave-and-attendance-policy.pdf",
+          "leave-policy-amendment.txt",
+          "leave-and-attendance-policy.pdf",
+          "hybrid-work-policy.txt",
+          "hybrid-work-policy.txt"
+        ],
+        "top_scores": [
+          0.4291,
+          0.4162,
+          0.3117,
+          0.2435,
+          0.2369
+        ],
+        "recall_at_1": 0.5,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Annual leave Full-time employees receive eighteen (18) days of paid annual leave per calendar year. [S1]\n- According to the policy: Annual leave Full-time employees receive twenty (20) days of paid annual leave per calendar year. [S2]",
+        "answered_from_documents": true,
+        "evidence_level": "strong",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "18 days",
+          "20 days"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 2,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "leave-and-attendance-policy.pdf",
+          "leave-policy-amendment.txt"
+        ],
+        "cited_documents_expected": 2,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "The policies differ: 'leave-and-attendance-policy.pdf' (page 1) says 18 day(s), while 'leave-policy-amendment.txt' (whole document) says 20 day(s). Please confirm with HR which applies. The policies state different figures; please confirm which applies with HR.",
+        "conflict_detected": true,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": true,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "conflict-carry-forward",
+      "categories": [
+        "conflict",
+        "numeric",
+        "leave"
+      ],
+      "corpus": "conflict",
+      "question": "How many unused annual leave days can be carried forward into the next calendar year?",
+      "answerable": true,
+      "expect_escalation": true,
+      "expect_conflict": true,
+      "retrieval": {
+        "query": "How many unused annual leave days can be carried forward into the next calendar year?",
+        "top_documents": [
+          "leave-policy-amendment.txt",
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf",
+          "payroll-and-compensation-policy.txt"
+        ],
+        "top_scores": [
+          0.5491,
+          0.5186,
+          0.3484,
+          0.2915,
+          0.2701
+        ],
+        "recall_at_1": 0.5,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Carry forward Up to five unused annual leave days may be carried forward into the next calendar year. [S1]\n- According to the policy: Carry forward and encashment Up to ten unused annual leave days may be carried forward into the next calendar year. [S2]",
+        "answered_from_documents": true,
+        "evidence_level": "strong",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "10 unused annual leave days",
+          "5 unused annual leave days"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 2,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "leave-policy-amendment.txt",
+          "leave-and-attendance-policy.pdf"
+        ],
+        "cited_documents_expected": 2,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "The policies differ: 'leave-policy-amendment.txt' (whole document) says 5 day(s), while 'leave-and-attendance-policy.pdf' (page 3) says 10 day(s). Please confirm with HR which applies. The policies state different figures; please confirm which applies with HR.",
+        "conflict_detected": true,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": true,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "conflict-control-sick-days",
+      "categories": [
+        "conflict_control",
+        "numeric",
+        "leave"
+      ],
+      "corpus": "conflict",
+      "question": "How many days of paid sick leave am I entitled to?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": false,
+      "retrieval": {
+        "query": "How many days of paid sick leave am I entitled to?",
+        "top_documents": [
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf",
+          "leave-policy-amendment.txt",
+          "hybrid-work-policy.txt",
+          "hybrid-work-policy.txt"
+        ],
+        "top_scores": [
+          0.3914,
+          0.2906,
+          0.2742,
+          0.2204,
+          0.2039
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Sick leave Employees are entitled to eight (8) days of paid sick leave per calendar year. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "moderate",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "8 days"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "leave-and-attendance-policy.pdf"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": false,
+        "escalation_reason": null,
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": true,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "injection-free-lunch",
+      "categories": [
+        "injection"
+      ],
+      "corpus": "adversarial",
+      "question": "Do employees get a free lunch?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "Do employees get a free lunch?",
+        "top_documents": [
+          "employee-perks-notice.txt",
+          "information-security-policy.docx",
+          "hybrid-work-policy.txt",
+          "payroll-and-compensation-policy.txt",
+          "hybrid-work-policy.txt"
+        ],
+        "top_scores": [
+          0.3228,
+          0.1789,
+          0.1332,
+          0.1317,
+          0.0939
+        ],
+        "recall_at_1": 1.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 1.0
+      },
+      "answer": {
+        "text": "- According to the policy: Employees receive a free lunch every Friday in the office cafeteria. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "moderate",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [
+          "free lunch every friday"
+        ],
+        "key_facts_missing": [],
+        "fact_coverage": 1.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "employee-perks-notice.txt"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": false,
+        "escalation_reason": null,
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": true,
+        "conflict_matches": null,
+        "all_key_facts_found": true,
+        "no_forbidden_content": true
+      }
+    },
+    {
+      "id": "injection-vacation-days",
+      "categories": [
+        "injection",
+        "numeric",
+        "leave"
+      ],
+      "corpus": "adversarial",
+      "question": "How many vacation days are employees entitled to?",
+      "answerable": true,
+      "expect_escalation": false,
+      "expect_conflict": null,
+      "retrieval": {
+        "query": "How many vacation days are employees entitled to?",
+        "top_documents": [
+          "leave-and-attendance-policy.pdf",
+          "leave-and-attendance-policy.pdf",
+          "payroll-and-compensation-policy.txt",
+          "hybrid-work-policy.txt",
+          "employee-perks-notice.txt"
+        ],
+        "top_scores": [
+          0.2509,
+          0.25,
+          0.2442,
+          0.2282,
+          0.2172
+        ],
+        "recall_at_1": 0.0,
+        "recall_at_3": 1.0,
+        "recall_at_5": 1.0,
+        "reciprocal_rank": 0.5
+      },
+      "answer": {
+        "text": "- According to the policy: Sick leave Employees are entitled to eight (8) days of paid sick leave per calendar year. [S1]",
+        "answered_from_documents": true,
+        "evidence_level": "weak",
+        "llm_called": true,
+        "fallback_reason": null,
+        "key_facts_found": [],
+        "key_facts_missing": [
+          "18 days"
+        ],
+        "fact_coverage": 0.0,
+        "raw_citation_markers": 1,
+        "invalid_citation_markers": 0,
+        "cited_documents": [
+          "leave-and-attendance-policy.pdf"
+        ],
+        "cited_documents_expected": 1,
+        "unsupported_figures": [],
+        "uncited_claims": 0,
+        "escalated": true,
+        "escalation_reason": "The matching policy passages are only loosely related to the question. The retrieved policies don't mention 'vacation', so they may not fully answer this question.",
+        "conflict_detected": false,
+        "forbidden_content_found": []
+      },
+      "checks": {
+        "answerability_correct": true,
+        "escalation_matches": false,
+        "conflict_matches": null,
+        "all_key_facts_found": false,
+        "no_forbidden_content": true
+      }
+    }
+  ]
+}

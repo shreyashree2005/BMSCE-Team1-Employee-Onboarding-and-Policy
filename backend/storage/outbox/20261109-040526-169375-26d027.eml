@@ -1,0 +1,17 @@
+From: OnboardIQ <no-reply@onboardiq-demo.example>
+To: browser.test.7111016@onboardiq-demo.example
+Subject: Reset your OnboardIQ password
+Date: Mon, 09 Nov 2026 04:05:26 +0000
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0
+
+Hi Browser Test,
+
+We received a request to reset the password for your OnboardIQ account.
+
+Reset your password: http://localhost:5173/reset-password?token=c3u4PiaAEtzh9ThW4m90QBUyXms120bc3jUsSJm7_TA
+
+This link works once and expires in 30 minutes. If you didn't ask for this, you can ignore this email; your password won't change.
+
+OnboardIQ (fictional demo workspace)
