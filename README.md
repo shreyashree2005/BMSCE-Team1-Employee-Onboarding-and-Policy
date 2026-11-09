@@ -8,6 +8,8 @@ An AI-powered employee onboarding and policy knowledge assistant developed for t
   - New hires often don't know what to do first, what's due today, or where to find the right policy.
   - Checklists in spreadsheets and emails get lost, and HR can't see who is stuck.
   - Policy questions take up HR's time, and answers can be inconsistent.
+  - Important onboarding updates may be missed due to scattered communication.
+  - New employees may not get quick answers to their common questions.
 - **Its purpose:**
   - Give every employee a personalised checklist for their job role, with one clear next step at any moment.
   - Complete each task through a real action (form, upload, checklist, policy reading, training, quiz) that the server validates.
