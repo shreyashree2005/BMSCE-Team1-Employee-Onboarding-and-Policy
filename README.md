@@ -4,7 +4,7 @@
 
 ## Project Overview
 
-- **What it is:** a web platform that guides a new employee from registration to "fully onboarded", and helps HR follow their progress.
+- **What it is:**  A web-based platform that streamlines the employee onboarding process, guiding new hires from registration to successful onboarding while enabling HR to monitor and manage their progress efficiently.
 - **The problem it solves:**
   - New hires often don't know what to do first, what's due today, or where to find the right policy.
   - Checklists in spreadsheets and emails get lost, and HR can't see who is stuck.
