@@ -1,6 +1,5 @@
-# OnboardIQ — Employee Platform
-
-**AI-powered employee onboarding and policy knowledge assistant**, built for the Dayforce Campus AI Innovation Challenge.
+# OnboardIQ — Employee 
+An AI-powered employee onboarding and policy knowledge assistant developed for the Dayforce Campus AI Innovation Challenge. OnboardIQ streamlines the onboarding process by enabling new employees to complete registration, manage profiles, track onboarding tasks, and access company policies through a centralized platform. It also helps HR teams monitor employee progress, manage records, and resolve queries efficiently, ensuring a seamless and organized onboarding experience.
 
 ## Project Overview
 
