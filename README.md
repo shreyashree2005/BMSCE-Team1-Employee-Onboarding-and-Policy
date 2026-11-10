@@ -589,3 +589,9 @@ cd frontend && npm run build         # production build
 - An HR screen to edit the holiday calendar and weekly schedule.
 - Code-splitting the frontend bundle.
 - Shared rate-limit store (e.g. Redis) for multiple API workers.
+
+## Demo Recording
+
+We have released the 8-minute end-to-end demonstration of **OnboardIQ** as a GitHub Release. The video showcases the complete user workflow and key features of our application.
+
+[Watch the Demo Recording](https://github.com/shreyashree2005/BMSCE-Team1-Employee-Onboarding-and-Policy/releases/download/v1.0/Screen.Recording.2026-11-10.171650.1.mp4)
