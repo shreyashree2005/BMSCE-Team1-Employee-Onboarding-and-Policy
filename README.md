@@ -1,3 +1,5 @@
+
+
 # OnboardIQ — Employee 
 An AI-powered employee onboarding and policy knowledge assistant developed for the Dayforce Campus AI Innovation Challenge. OnboardIQ streamlines the onboarding process by enabling new employees to complete registration, manage profiles, track onboarding tasks, and access company policies through a centralized platform. It also helps HR teams monitor employee progress, manage records, and resolve queries efficiently, ensuring a seamless and organized onboarding experience.
 
@@ -41,7 +43,7 @@ An AI-powered employee onboarding and policy knowledge assistant developed for t
   - **Your Progress**: completion percentage and total / completed / in progress / pending counts.
   - **Onboarding journey**: five stage cards with progress; each opens All Tasks filtered to that stage.
   - 15-day onboarding calendar that explains every day without tasks.
-  - Help Desk access.
+  - Help Desk access to help employees.
 - **Profile**
   - Employee profile (personal details completed through the profile task).
   - Profile photo upload (JPG/PNG), shown as a circle in the top-right corner with a profile menu.
